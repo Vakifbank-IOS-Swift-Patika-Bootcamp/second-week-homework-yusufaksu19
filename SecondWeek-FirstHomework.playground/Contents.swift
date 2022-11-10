@@ -30,9 +30,9 @@ enum EmployeeRelationShip: String{
 
 
 protocol CompanyEmployeeDelegate {
-  var employeesTotalMoney: Double { get set }
+  var employeesTotalMoney: Double? { get set }
   var companyBudget: Double? { get set }
-  var companyEmployeesCount: Int { get set }
+  var companyEmployeesCount: Int? { get set }
   func substractMoneyFromBudget(substract money: Double)
   func addMoneyToBudget(add money: Double)
   func addNewEmployee(count employee: Int)
@@ -41,10 +41,10 @@ protocol CompanyEmployeeDelegate {
 
 class Company: CompanyEmployeeDelegate{
   var companyBudget: Double?
-  let companyName: String
-  var companyEmployeesCount: Int
+  let companyName: String?
+  var companyEmployeesCount: Int?
   let companyStartYear: String
-  var employeesTotalMoney: Double = 0.0
+  var employeesTotalMoney: Double? = 0.0
 
 
   init (companyName: String, companyEmployeesCount: Int, companyStartYear: String, companyBudget: Double) {
@@ -72,7 +72,7 @@ class Company: CompanyEmployeeDelegate{
   }
 
   func addNewEmployee(count employee: Int){
-    companyEmployeesCount += employee
+    companyEmployeesCount! += employee
     print("--")
     print("--------------- Yeni Çalışan Ekleniyor: \(employee) --------")
     print("--")
@@ -80,25 +80,25 @@ class Company: CompanyEmployeeDelegate{
   }
 
   func calculateEmployeesTotalMoney(money amount: Double){
-    self.employeesTotalMoney += amount
+    self.employeesTotalMoney! += amount
     print("--")
-    print("--------------- Çalışanlara Ödenmesi Gereken Para Güncelleniyor Artış Miktarı:  \(amount) -------- Toplam Ulaşılan Mebla: \(self.employeesTotalMoney)")
+    print("--------------- Çalışanlara Ödenmesi Gereken Para Güncelleniyor Artış Miktarı:  \(amount) -------- Toplam Ulaşılan Mebla: \(self.employeesTotalMoney!)")
     print("--")
   }
 
   func payMoneyToAllEmployees(completed: () -> Void){
     print("--")
-    print("--------------- Çalışanlara Ödenmesi Gereken Para Toplamı: \(employeesTotalMoney) ödenesi yapıldı ve bütçeden çıkarıldı. --------")
+    print("--------------- Çalışanlara Ödenmesi Gereken Para Toplamı: \(employeesTotalMoney!) ödenesi yapıldı ve bütçeden çıkarıldı. --------")
     print("--")
-    self.companyBudget! -= employeesTotalMoney
+    self.companyBudget! -= employeesTotalMoney!
     completed()
     printCompanyInformations()
   }
 
   func printCompanyInformations() {
     print("--------------- Şirket Bilgileri -----------------")
-    print("Şirket Adı: \(companyName)")
-    print("Şirketteki Çalışan Sayısı: \(companyEmployeesCount)")
+    print("Şirket Adı: \(companyName!)")
+    print("Şirketteki Çalışan Sayısı: \(companyEmployeesCount!)")
     print("Şirket Bütçesi: \(companyBudget!)")
     print("Şirket Kuruluş Yılı: \(companyStartYear)")
     print("--------------------------------------------------")
@@ -107,10 +107,10 @@ class Company: CompanyEmployeeDelegate{
 }
 
 class Employee {
-  let employeeName: String
-  var employeeAge: Int
-  var employeeRelationship: EmployeeRelationShip
-  var employeeRank: EmployeeRank
+  let employeeName: String?
+  var employeeAge: Int?
+  var employeeRelationship: EmployeeRelationShip?
+  var employeeRank: EmployeeRank?
   var employeeReveneu: Double? = 0
   var delegate: CompanyEmployeeDelegate?
 
@@ -126,7 +126,7 @@ class Employee {
   }
 
   func calculateEmployeeSalary() -> Double {
-    employeeReveneu = Double(employeeAge * employeeRank.rawValue * 100)
+    employeeReveneu = Double(employeeAge! * employeeRank!.rawValue * 100)
     print("--")
     print("--------------- Personel Maaşı Hesaplanıyor: \(employeeReveneu!) --------")
     print("--")
@@ -141,10 +141,10 @@ class Employee {
 
   func printPersonalInformation() {
     print("--------------- Personel Bilgileri -----------------")
-    print("Personel Adı: \(employeeName)")
-    print("Personel Yaşı: \(employeeAge)")
-    print("Personel İlişki Durumu: \(employeeRelationship.rawValue)")
-    print("Personel Statüsü: \(employeeRank)")
+    print("Personel Adı: \(employeeName!)")
+    print("Personel Yaşı: \(employeeAge!)")
+    print("Personel İlişki Durumu: \(employeeRelationship!.rawValue)")
+    print("Personel Statüsü: \(employeeRank!)")
     print("Personel Maaşı: \(employeeReveneu!)")
     print("--------------------------------------------------")
   }
