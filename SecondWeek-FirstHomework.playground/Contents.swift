@@ -86,11 +86,12 @@ class Company: CompanyEmployeeDelegate{
     print("--")
   }
 
-  func payMoneyToAllEmployees(){
+  func payMoneyToAllEmployees(completed: () -> Void){
     print("--")
     print("--------------- Çalışanlara Ödenmesi Gereken Para Toplamı: \(employeesTotalMoney) ödenesi yapıldı ve bütçeden çıkarıldı. --------")
     print("--")
     self.companyBudget! -= employeesTotalMoney
+    completed()
     printCompanyInformations()
   }
 
@@ -164,6 +165,9 @@ let kaanEmployee = Employee(employeeName: "Kaan Tangöze", employeeAge: 30, empl
 
 let senaEmployee = Employee(employeeName: "Sena Şener", employeeAge: 40, employeeRelationship: .single, employeeRank: .senior, delegate: appleCompany)
 
-appleCompany.payMoneyToAllEmployees()
+appleCompany.payMoneyToAllEmployees {
+  print("-- Ödemeler Tamamlandı.")
+  print("-- ")
+}
 
 
