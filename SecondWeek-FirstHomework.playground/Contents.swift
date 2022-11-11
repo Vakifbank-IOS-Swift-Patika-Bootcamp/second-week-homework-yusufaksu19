@@ -30,7 +30,7 @@ enum EmployeeRelationShip: String{
 
 
 protocol CompanyEmployeeDelegate {
-  var employeesTotalMoney: Double? { get set }
+  var employeesTotalMoney: Double { get set }
   var companyBudget: Double? { get set }
   var companyEmployeesCount: Int? { get set }
   func substractMoneyFromBudget(substract money: Double)
@@ -44,7 +44,7 @@ class Company: CompanyEmployeeDelegate{
   let companyName: String?
   var companyEmployeesCount: Int?
   let companyStartYear: String
-  var employeesTotalMoney: Double? = 0.0
+  var employeesTotalMoney: Double = 0.0
 
 
   init (companyName: String, companyEmployeesCount: Int, companyStartYear: String, companyBudget: Double) {
@@ -64,10 +64,17 @@ class Company: CompanyEmployeeDelegate{
   }
 
   func substractMoneyFromBudget(substract money: Double){
-    companyBudget? -= money
-    print("--")
-    print("--------------- Bütçeden para eksiliyor: \(money) --------")
-    print("--")
+    if (companyBudget! < money) {
+      print("--")
+      print("Bütçede yeterli miktarda para bulunmamakta.")
+      print("--")
+    } else {
+      companyBudget? -= money
+      print("--")
+      print("--------------- Bütçeden para eksiliyor: \(money) --------")
+      print("--")
+    }
+
     printCompanyInformations()
   }
 
@@ -80,17 +87,24 @@ class Company: CompanyEmployeeDelegate{
   }
 
   func calculateEmployeesTotalMoney(money amount: Double){
-    self.employeesTotalMoney! += amount
+    self.employeesTotalMoney += amount
     print("--")
-    print("--------------- Çalışanlara Ödenmesi Gereken Para Güncelleniyor Artış Miktarı:  \(amount) -------- Toplam Ulaşılan Mebla: \(self.employeesTotalMoney!)")
+    print("--------------- Çalışanlara Ödenmesi Gereken Para Güncelleniyor Artış Miktarı:  \(amount) -------- Toplam Ulaşılan Mebla: \(self.employeesTotalMoney)")
     print("--")
   }
 
   func payMoneyToAllEmployees(completed: () -> Void){
-    print("--")
-    print("--------------- Çalışanlara Ödenmesi Gereken Para Toplamı: \(employeesTotalMoney!) ödenesi yapıldı ve bütçeden çıkarıldı. --------")
-    print("--")
-    self.companyBudget! -= employeesTotalMoney!
+
+    if (self.companyBudget! <= employeesTotalMoney) {
+      print("--")
+      print("Bütçede yeterli miktarda para bulunmamakta!")
+      print("--")
+    } else {
+      self.companyBudget! -= employeesTotalMoney
+      print("--")
+      print("--------------- Çalışanlara Ödenmesi Gereken Para Toplamı: \(employeesTotalMoney) ödemesi yapıldı ve bütçeden çıkarıldı. --------")
+      print("--")
+    }
     completed()
     printCompanyInformations()
   }
